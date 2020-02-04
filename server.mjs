@@ -2,11 +2,18 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import mongoose from 'mongoose';
-import { gDirname } from "./utils/utilityFunctions";
+import dotenv from 'dotenv';
+import { gDirname } from './utils/utilityFunctions.mjs';
+
+dotenv.config();
 
 const app = express();
 
-mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/exercise-track');
+mongoose.connect(process.env.MONGOLAB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+
+mongoose.connection.on('error', err => {
+  console.log(err);
+});
 
 app.use(cors());
 
