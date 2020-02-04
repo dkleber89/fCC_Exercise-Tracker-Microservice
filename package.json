@@ -1,29 +1,57 @@
 {
-	"name": "fcc-exercise-tracker",
-	"version": "0.1.0",
-	"description": "A REST API project, part of Free Code Camp's curriculum",
-	"main": "server.js",
-	"scripts": {
-		"start": "node server.js"
-	},
-	"dependencies": {
-		"express": "^4.14.0",
-		"mongoose": "^4.7.2",
-		"mongodb": "^2.2.14",
-		"body-parser": "^1.15.2",
-		"cors": "^2.8.1",
-		"shortid": "^2.2.6"
-	},
-	"engines": {
-		"node": "6.9.1"
-	},
-	"repository": {
-		"url": "https://gomix.com/#!/project/welcome-project"
-	},
-	"license": "MIT",
-	"keywords": [
-		"node",
-		"gomix",
-		"express"
-	]
+  "name": "fcc_exercise-tracker-microservice",
+  "version": "0.1.0",
+  "description": "An FCC Backend Challenge",
+  "keywords": [
+    "node",
+    "gomix",
+    "express"
+  ],
+  "homepage": "https://github.com/dkleber89/fCC_Exercise-Tracker-Microservice",
+  "bugs": {
+    "url": "https://github.com/dkleber89/fCC_Exercise-Tracker-Microservice/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dkleber89/fCC_Exercise-Tracker-Microservice.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "dkleber89",
+    "email": "dkleber89@gmail.com",
+    "url": "https://www.linkedin.com/in/dkleber89/"
+  },
+  "contributors": [
+    {
+      "name": "dkleber89",
+      "email": "dkleber89@gmail.com"
+    }
+  ],
+  "main": "server.mjs",
+  "type": "module",
+  "scripts": {
+    "start": "node --experimental-modules server.mjs"
+  },
+  "dependencies": {
+    "express": "~4.17.1",
+    "mongoose": "~5.8.11",
+    "mongodb": "~3.5.2",
+    "body-parser": "~1.19.0",
+    "cors": "~2.8.5",
+    "shortid": "~2.2.15"
+  },
+  "devDependencies": {
+    "babel-eslint": "~10.0.3",
+    "eslint": "~6.8.0",
+    "eslint-config-airbnb-base": "~14.0.0",
+    "eslint-config-prettier": "~6.10.0",
+    "eslint-plugin-import": "~2.20.0",
+    "eslint-plugin-jest": "~23.6.0",
+    "eslint-plugin-prettier": "~3.1.2",
+    "jest": "~25.1.0",
+    "prettier": "~1.19.1"
+  },
+  "engines": {
+    "node": "6.9.1"
+  }
 }
