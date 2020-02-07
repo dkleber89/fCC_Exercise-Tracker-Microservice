@@ -1,19 +1,15 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import { gDirname } from './utils/utilityFunctions.mjs';
+import DatabaseWorker from './utils/DatabaseWorker.mjs';
 
 dotenv.config();
 
 const app = express();
 
-mongoose.connect(process.env.MONGOLAB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-
-mongoose.connection.on('error', err => {
-  console.log(err);
-});
+const database = new DatabaseWorker();
 
 app.use(cors());
 
@@ -25,14 +21,54 @@ app.get('/', (req, res) => {
   res.sendFile(`${gDirname(import.meta.url)}/views/index.html`);
 });
 
+app.post('/api/exercise/new-user', (req, res) => {
+  database.addUser(req.body.username, (err, data) => {
+    if (err) {
+      res
+        .status(err.errorCode || 500)
+        .type('txt')
+        .send(err.errorMessage || 'Internal Server Error');
+    } else {
+      res.json(data);
+    }
+  });
+});
+
+app.post('/api/exercise/add', (req, res) => {
+  database.addExercise(req.body, (err, data) => {
+    if (err) {
+      res
+        .status(err.errorCode || 500)
+        .type('txt')
+        .send(err.errorMessage || 'Internal Server Error');
+    } else {
+      res.json(data);
+    }
+  });
+});
+
+app.get('/api/exercise/log', (req, res) => {
+  database.getLog(req.query, (err, data) => {
+    if (err) {
+      res
+        .status(err.errorCode || 500)
+        .type('txt')
+        .send(err.errorMessage || 'Internal Server Error');
+    } else {
+      res.json(data);
+    }
+  });
+});
+
 // Not found middleware
 app.use((req, res, next) => {
   return next({ status: 404, message: 'not found' });
 });
 
 // Error Handling middleware
-app.use((err, req, res, next) => {
-  let errCode, errMessage;
+app.use((err, req, res) => {
+  let errCode;
+  let errMessage;
 
   if (err.errors) {
     // mongoose validation error
@@ -53,5 +89,5 @@ app.use((err, req, res, next) => {
 });
 
 const listener = app.listen(process.env.PORT || 3000, () => {
-  console.log('Your app is listening on port ' + listener.address().port);
+  console.log(`Your app is listening on port ${listener.address().port}`);
 });
