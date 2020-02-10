@@ -1,6 +1,6 @@
 {
   "name": "fcc_exercise-tracker-microservice",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "An FCC Backend Challenge",
   "keywords": [
     "node",
@@ -53,6 +53,6 @@
     "prettier": "~1.19.1"
   },
   "engines": {
-    "node": "6.9.1"
+    "node": "4.4.5"
   }
 }
