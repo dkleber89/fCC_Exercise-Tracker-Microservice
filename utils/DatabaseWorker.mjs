@@ -62,6 +62,7 @@ export default class DatabaseWorker {
       this.User.findByIdAndUpdate(body.userId, { $push: { exercises: exercise } }, { new: true }, (err, savedData) => {
         if (err) {
           cb({ errorCode: err.code, errorMessage: err.errmsg });
+          return;
         }
 
         if (savedData) {
@@ -94,13 +95,36 @@ export default class DatabaseWorker {
     }
 
     if (typeof query.userId === 'string' && query.userId.length > 0) {
-      this.User.findById(query.userId)
+      this.User.findById(query.userId, (err, data) => {
+        if (err) {
+          cb({ errorCode: err.code, errorMessage: err.errmsg });
+          return;
+        }
 
-        .exec((err, data) => {
-          console.log(err);
-          console.log(JSON.stringify(data.aggregate([{ $project: { execises: { $filter: { input: '$exercises', as: 'exercise', cond: { $gte: ['$$exercise.duration', 60] } } } } }])));
-          cb({ errorCode: 400, errorMessage: 'Bad Request 1' });
-        });
+        if (data) {
+          const filteredExercises = data.exercises.filter(exercise => {
+            if (from !== null && exercise.date < from) {
+              return false;
+            }
+
+            if (to !== null && exercise.date > to) {
+              return false;
+            }
+
+            return true;
+          });
+
+          if (limit !== null && limit >= 0) {
+            filteredExercises.length = Math.min(filteredExercises.length, limit);
+          }
+
+          const outputData = { log: filteredExercises, count: filteredExercises.length };
+
+          cb(undefined, outputData);
+        } else {
+          cb({ errorCode: 400, errorMessage: 'Bad Request' });
+        }
+      });
     } else {
       cb({ errorCode: 400, errorMessage: 'Bad Request' });
     }
